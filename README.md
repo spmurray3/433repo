@@ -3,11 +3,28 @@ HW1
 Sam Murray
 9/22/2021
 
+**Import libraries**
+
 ``` r
 library(rvest)
 ```
 
     ## Warning: package 'rvest' was built under R version 3.6.2
+
+``` r
+library(dplyr)
+```
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
 
 **Read in html of faculty website from url**
 
@@ -25,7 +42,6 @@ html
 
 ``` r
 names = html_nodes(html, 'p')
-#rows = strsplit(toString(names), "\n", fixed=TRUE)[[1]]
 facultyList = strsplit(toString(names), "<p>")[[1]]
 
 head(facultyList)
@@ -122,3 +138,51 @@ head(faculty_df, n=10)
     ## 8      PHD 1987 Colorado State University
     ## 9  PHD 2008 Univ of Michigan at Ann Arbor
     ## 10      PHD 2018 University of Washington
+
+**Show counts of position titles for all staff**
+
+``` r
+faculty_df %>% 
+  group_by(Position) %>% 
+  tally() %>% 
+  arrange(desc(n))
+```
+
+    ## # A tibble: 75 x 2
+    ##    Position                n
+    ##    <fct>               <int>
+    ##  1 Professor            1137
+    ##  2 Assistant Professor   538
+    ##  3 Associate Professor   413
+    ##  4 Lecturer              297
+    ##  5 Faculty Associate     188
+    ##  6 Assoc Lecturer        166
+    ##  7 Senior Lecturer       122
+    ##  8 Assoc Faculty Assoc   116
+    ##  9 Clinical Instructor    95
+    ## 10 Clinical Asst Prof     81
+    ## # … with 65 more rows
+
+**Show counts of departments for all staff**
+
+``` r
+faculty_df %>% 
+  group_by(Department) %>% 
+  tally() %>% 
+  arrange(desc(n))
+```
+
+    ## # A tibble: 203 x 2
+    ##    Department            n
+    ##    <fct>             <int>
+    ##  1 Law School          123
+    ##  2 Nursing              92
+    ##  3 Mathematics          90
+    ##  4 English              83
+    ##  5 Medicine             83
+    ##  6 Social Work          79
+    ##  7 Pharmacy             73
+    ##  8 Computer Sciences    65
+    ##  9 Chemistry            62
+    ## 10 History              60
+    ## # … with 193 more rows
