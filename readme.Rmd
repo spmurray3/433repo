@@ -4,8 +4,10 @@ author: "Sam Murray"
 date: "9/22/2021"
 output: github_document
 ---
+**Import libraries**
 ```{r library}
 library(rvest)
+library(dplyr)
 ```
 **Read in html of faculty website from url**
 ```{r read-data}
@@ -15,7 +17,6 @@ html
 **Extract paragraphs of text from html and split by each**
 ```{r parse-html}
 names = html_nodes(html, 'p')
-#rows = strsplit(toString(names), "\n", fixed=TRUE)[[1]]
 facultyList = strsplit(toString(names), "<p>")[[1]]
 
 head(facultyList)
@@ -57,4 +58,19 @@ row.names(faculty_df) <- seq(1:length(row.names(faculty_df)))
 ```{r dataframe}
 print(str(faculty_df))
 head(faculty_df, n=10)
+```
+
+**Show counts of position titles for  all staff**
+```{r counts}
+faculty_df %>% 
+  group_by(Position) %>% 
+  tally() %>% 
+  arrange(desc(n))
+```
+**Show counts of departments for  all staff**
+```{r counts2}
+faculty_df %>% 
+  group_by(Department) %>% 
+  tally() %>% 
+  arrange(desc(n))
 ```
