@@ -1,4 +1,4 @@
-HW1
+HW1 (Faculty list assignment)
 ================
 Sam Murray
 9/22/2021
